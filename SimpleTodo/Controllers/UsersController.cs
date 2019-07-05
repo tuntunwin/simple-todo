@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using SimpleTodo.Models;
 
 namespace SimpleTodo.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly SimpleTodoDbContext _context;
@@ -21,6 +23,7 @@ namespace SimpleTodo.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            var userName = User.Identity.Name;
             return View(await _context.Users.ToListAsync());
         }
 
@@ -43,6 +46,7 @@ namespace SimpleTodo.Controllers
         }
 
         // GET: Users/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -53,6 +57,7 @@ namespace SimpleTodo.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,LoginName,DisplayName,Password")] User user)
         {
             if (ModelState.IsValid)
@@ -65,6 +70,7 @@ namespace SimpleTodo.Controllers
         }
 
         // GET: Users/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -85,6 +91,7 @@ namespace SimpleTodo.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,LoginName,DisplayName,Password")] User user)
         {
             if (id != user.Id)
@@ -116,6 +123,7 @@ namespace SimpleTodo.Controllers
         }
 
         // GET: Users/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,6 +144,7 @@ namespace SimpleTodo.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var user = await _context.Users.FindAsync(id);

@@ -8,6 +8,7 @@ namespace SimpleTodo.Models
 {
     public class SimpleTodoDbContext : DbContext
     {
+        public SimpleTodoDbContext() { }    
         public SimpleTodoDbContext(DbContextOptions options) : base(options) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
